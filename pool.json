@@ -1,0 +1,22 @@
+{
+  "generated": "seed",
+  "note": "Curated seed specimens so the app runs before you fetch live data. Run `node generate-pool.mjs` to replace these with real Semantic Scholar TLDRs.",
+  "specimens": [
+    { "id": "seed-001", "topic": "biology",      "source": "seed", "tldr": "Octopuses have three hearts and blue, copper-based blood, so their circulation looks nothing like ours." },
+    { "id": "seed-002", "topic": "chemistry",     "source": "seed", "tldr": "Honey never truly spoils — sealed pots recovered from ancient tombs are still edible thousands of years later." },
+    { "id": "seed-003", "topic": "astrophysics",  "source": "seed", "tldr": "A single teaspoon of neutron-star material would weigh about as much as a mountain here on Earth." },
+    { "id": "seed-004", "topic": "physics",       "source": "seed", "tldr": "At its triple point, water can boil and freeze at the same time, coexisting as solid, liquid, and gas." },
+    { "id": "seed-005", "topic": "biology",       "source": "seed", "tldr": "Tardigrades can survive the vacuum of space, extreme radiation, and near-total dehydration, then revive." },
+    { "id": "seed-006", "topic": "physics",       "source": "seed", "tldr": "Bananas are faintly radioactive because they carry potassium-40 — enough to give doses a friendly nickname." },
+    { "id": "seed-007", "topic": "physics",       "source": "seed", "tldr": "A bolt of lightning is roughly five times hotter than the visible surface of the Sun." },
+    { "id": "seed-008", "topic": "mathematics",   "source": "seed", "tldr": "There are more possible games of chess than there are atoms in the observable universe." },
+    { "id": "seed-009", "topic": "biology",       "source": "seed", "tldr": "Sharks are older than trees, having swum the oceans for more than 400 million years." },
+    { "id": "seed-010", "topic": "physics",       "source": "seed", "tldr": "Under the right conditions, hot water can freeze faster than cold — the still-debated Mpemba effect." },
+    { "id": "seed-011", "topic": "biology",       "source": "seed", "tldr": "Your body is built from roughly 37 trillion cells, each one running its own tiny chemistry." },
+    { "id": "seed-012", "topic": "astronomy",     "source": "seed", "tldr": "Helium was detected in sunlight before anyone found it on Earth — that's how it got its solar name." },
+    { "id": "seed-013", "topic": "astronomy",     "source": "seed", "tldr": "A day on Venus lasts longer than its entire year, because it spins so slowly on its axis." },
+    { "id": "seed-014", "topic": "physics",       "source": "seed", "tldr": "Almost all of an atom is empty space; if the nucleus were a marble, electrons would orbit a stadium away." },
+    { "id": "seed-015", "topic": "microbiology",  "source": "seed", "tldr": "Some bacteria grow protein 'nanowires' and conduct electricity, effectively breathing through metal." },
+    { "id": "seed-016", "topic": "neuroscience",  "source": "seed", "tldr": "Two-thirds of an octopus's neurons live in its arms, so each arm can taste and decide on its own." }
+  ]
+}
