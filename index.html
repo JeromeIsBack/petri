@@ -3,208 +3,186 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#0a0e1a" />
-<title>Petri — a science buddy</title>
+<meta name="theme-color" content="#eef1f8" />
+<title>Prism — a science buddy</title>
 <link rel="manifest" href="manifest.webmanifest" />
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 <link rel="icon" href="icons/favicon-64.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
   :root{
-    --void:#0a0e1a;
-    --abyss:#0d1526;
-    --cyan:#35e0c6;
-    --magenta:#c77dff;
-    --glass:rgba(255,255,255,.055);
-    --glass-strong:rgba(255,255,255,.09);
-    --frost:rgba(255,255,255,.14);
-    --frost-soft:rgba(255,255,255,.08);
-    --text:#e9eef7;
-    --dim:#8b9bb4;
-    --dimmer:#5d6b83;
-    --chrome:'Space Grotesk',system-ui,sans-serif;
-    --read:'Newsreader',Georgia,serif;
-    --data:'Space Mono',ui-monospace,monospace;
-    --nav-h:72px;
+    --bg:#eef1f8;
+    --ink:#171a2b;
+    --muted:#5b6478;
+    --faint:#98a1b4;
+    --glass:rgba(255,255,255,.5);
+    --glass-2:rgba(255,255,255,.4);
+    --glass-strong:rgba(255,255,255,.72);
+    --border:rgba(255,255,255,.75);
+    --border-soft:rgba(255,255,255,.5);
+    --shadow:0 8px 30px rgba(31,38,90,.10);
+    --shadow-lg:0 16px 50px rgba(31,38,90,.14);
+    --accent:#5b53e8;
+    --accent-ink:#3f38c4;
+    --spectrum:linear-gradient(180deg,#7c6cf0,#5aa0f0,#35c2c2,#7ed08a,#f2c063);
+    --spectrum-h:linear-gradient(90deg,#7c6cf0,#5aa0f0,#35c2c2,#7ed08a,#f2c063);
+    --serif:'Fraunces',Georgia,serif;
+    --sans:'Hanken Grotesk',system-ui,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,monospace;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{margin:0;height:100%;}
   body{
-    font-family:var(--chrome);
-    color:var(--text);
-    background:var(--void);
-    overflow:hidden;
-    position:relative;
+    font-family:var(--sans);color:var(--ink);background:var(--bg);
+    overflow:hidden;position:relative;
+    -webkit-font-smoothing:antialiased;
   }
-  /* ambient fluorescence field */
-  .field{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
-  .blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.5;}
-  .blob.a{width:60vw;height:60vw;background:radial-gradient(circle,var(--cyan),transparent 65%);top:-20vw;left:-15vw;animation:drift1 26s ease-in-out infinite;}
-  .blob.b{width:55vw;height:55vw;background:radial-gradient(circle,var(--magenta),transparent 65%);bottom:-18vw;right:-12vw;animation:drift2 32s ease-in-out infinite;}
-  .grid{position:fixed;inset:0;z-index:0;opacity:.5;pointer-events:none;
-    background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
-    background-size:34px 34px;mask-image:radial-gradient(ellipse 80% 70% at 50% 40%,#000 40%,transparent 100%);}
-  @keyframes drift1{0%,100%{transform:translate(0,0)}50%{transform:translate(6vw,4vw)}}
-  @keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(-5vw,-5vw)}}
+  /* aurora field — gives the frosted glass something to refract */
+  .field{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;filter:blur(10px);}
+  .orb{position:absolute;border-radius:50%;filter:blur(60px);}
+  .orb.v{width:62vw;height:62vw;background:radial-gradient(circle,#a892f6,transparent 68%);top:-16vw;left:-16vw;opacity:.55;animation:float1 30s ease-in-out infinite;}
+  .orb.b{width:55vw;height:55vw;background:radial-gradient(circle,#7dd3fc,transparent 68%);top:-8vw;right:-18vw;opacity:.5;animation:float2 34s ease-in-out infinite;}
+  .orb.m{width:60vw;height:60vw;background:radial-gradient(circle,#a7f3d0,transparent 68%);bottom:-20vw;right:-6vw;opacity:.5;animation:float1 38s ease-in-out infinite;}
+  .orb.p{width:52vw;height:52vw;background:radial-gradient(circle,#fcd3d9,transparent 68%);bottom:-16vw;left:-14vw;opacity:.55;animation:float2 28s ease-in-out infinite;}
+  @keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(5vw,4vw)}}
+  @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-5vw,-4vw)}}
 
   .app{position:relative;z-index:2;height:100dvh;display:flex;flex-direction:column;max-width:520px;margin:0 auto;}
 
-  /* ---- top bar ---- */
-  header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 10px;flex:none;}
-  .brand{display:flex;align-items:center;gap:10px;}
-  .brand .mark{width:26px;height:26px;filter:drop-shadow(0 0 6px rgba(53,224,198,.5));}
-  .brand h1{font-size:19px;font-weight:600;letter-spacing:.06em;margin:0;text-transform:uppercase;}
-  .brand h1 span{color:var(--cyan);}
-  .readout{display:flex;gap:14px;font-family:var(--data);font-size:11px;color:var(--dim);}
-  .readout b{display:block;font-size:15px;color:var(--text);font-weight:700;line-height:1.1;}
+  /* header */
+  header{display:flex;align-items:center;justify-content:space-between;padding:20px 22px 12px;flex:none;}
+  .brand h1{font-family:var(--serif);font-weight:600;font-optical-sizing:auto;font-variation-settings:'opsz' 144;
+    font-size:27px;letter-spacing:-.01em;margin:0;color:var(--ink);position:relative;display:inline-block;}
+  .brand h1::after{content:"";position:absolute;left:1px;right:1px;bottom:-3px;height:3px;border-radius:2px;background:var(--spectrum-h);}
+  .readout{display:flex;gap:18px;}
   .readout .stat{text-align:right;}
-  .readout .fire{color:var(--magenta);}
+  .readout b{display:block;font-family:var(--serif);font-optical-sizing:auto;font-size:19px;font-weight:600;line-height:1;color:var(--ink);}
+  .readout span{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--faint);text-transform:uppercase;}
 
-  /* ---- screens ---- */
-  main{flex:1;overflow-y:auto;overflow-x:hidden;padding:6px 18px 20px;scrollbar-width:none;}
+  main{flex:1;overflow-y:auto;overflow-x:hidden;padding:6px 20px 20px;scrollbar-width:none;}
   main::-webkit-scrollbar{display:none;}
-  .screen{display:none;animation:fade .35s ease;}
+  .screen{display:none;animation:rise .4s cubic-bezier(.2,.8,.2,1);}
   .screen.active{display:block;}
-  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-  .eyebrow{font-family:var(--data);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dimmer);margin:14px 2px 12px;}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin:16px 2px 14px;}
 
-  /* ---- specimen slide (the signature element) ---- */
-  .slide{
-    position:relative;border-radius:22px;padding:26px 24px 22px;
-    background:var(--glass);
-    border:1px solid var(--frost);
-    backdrop-filter:blur(22px) saturate(140%);
-    -webkit-backdrop-filter:blur(22px) saturate(140%);
-    box-shadow:0 12px 40px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.12);
-    overflow:hidden;
-  }
-  /* the backlight sweep along the top edge of the slide */
-  .slide::before{content:"";position:absolute;top:0;left:12%;right:12%;height:1px;
-    background:linear-gradient(90deg,transparent,var(--cyan),var(--magenta),transparent);opacity:.85;}
-  .slide .id{font-family:var(--data);font-size:10.5px;letter-spacing:.12em;color:var(--dimmer);text-transform:uppercase;display:flex;justify-content:space-between;margin-bottom:14px;}
-  .slide .id .topic{color:var(--cyan);}
-  .slide .body{font-family:var(--read);font-size:23px;line-height:1.4;font-weight:400;letter-spacing:.005em;}
-  .slide .title{font-family:var(--read);font-style:italic;font-size:14px;color:var(--dim);margin-top:14px;line-height:1.4;}
-  .slide .meta{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-family:var(--data);font-size:11px;color:var(--dim);margin-top:16px;}
-  .slide .meta .cite{color:var(--magenta);}
-  .slide.hero{min-height:min(56vh,420px);display:flex;flex-direction:column;justify-content:center;}
-  .slide.hero .body{font-size:26px;}
+  /* frosted glass — the real thing */
+  .glass{background:var(--glass);border:1px solid var(--border);
+    backdrop-filter:blur(24px) saturate(1.5);-webkit-backdrop-filter:blur(24px) saturate(1.5);
+    box-shadow:var(--shadow);}
 
-  /* fluorescence glow on the active hero slide */
-  .slide.glow{box-shadow:0 12px 50px rgba(0,0,0,.45),0 0 60px -18px rgba(53,224,198,.5),inset 0 1px 0 rgba(255,255,255,.14);}
+  /* specimen slide */
+  .slide{position:relative;border-radius:26px;padding:28px 26px 24px;overflow:hidden;}
+  .slide.hero{min-height:min(52vh,400px);display:flex;flex-direction:column;justify-content:center;box-shadow:var(--shadow-lg);}
+  /* prism edge — the signature */
+  .slide::before{content:"";position:absolute;left:0;top:18px;bottom:18px;width:4px;border-radius:4px;background:var(--spectrum);opacity:.9;}
+  .slide .id{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--faint);text-transform:uppercase;display:flex;justify-content:space-between;gap:10px;margin-bottom:16px;}
+  .slide .id .topic{color:var(--accent);font-weight:500;}
+  .slide .body{font-family:var(--serif);font-optical-sizing:auto;font-variation-settings:'opsz' 60;
+    font-size:23px;line-height:1.44;font-weight:400;color:var(--ink);letter-spacing:-.003em;}
+  .slide.hero .body{font-size:25px;}
+  .slide .title{font-family:var(--serif);font-style:italic;font-size:14.5px;color:var(--muted);margin-top:15px;line-height:1.45;}
+  a.title{text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s;}
+  a.title:hover{border-color:var(--muted);}
+  .slide .meta{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:15px;}
+  .slide .meta .cite{color:var(--accent-ink);}
+  .slide .meta .oa{color:#1f9d6b;}
 
-  /* actions on a slide */
-  .slide-actions{display:flex;gap:10px;margin-top:20px;}
-  .chip{
-    display:inline-flex;align-items:center;gap:7px;cursor:pointer;user-select:none;
-    font-family:var(--chrome);font-size:13px;font-weight:500;
-    padding:10px 15px;border-radius:13px;
-    background:var(--frost-soft);border:1px solid var(--frost-soft);color:var(--text);
-    transition:transform .15s ease,background .2s ease,border-color .2s ease;
-  }
-  .chip:hover{background:var(--glass-strong);border-color:var(--frost);}
+  .actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px;}
+  .chip{display:inline-flex;align-items:center;gap:7px;cursor:pointer;user-select:none;text-decoration:none;
+    font-family:var(--sans);font-size:13.5px;font-weight:500;padding:10px 15px;border-radius:13px;
+    background:var(--glass-strong);border:1px solid var(--border-soft);color:var(--ink);
+    box-shadow:0 2px 8px rgba(31,38,90,.05);transition:transform .14s,background .2s,border-color .2s,color .2s;}
+  .chip:hover{background:#fff;}
   .chip:active{transform:scale(.96);}
-  .chip.saved{color:var(--magenta);border-color:rgba(199,125,255,.4);background:rgba(199,125,255,.1);}
   .chip svg{width:15px;height:15px;}
-  .chip.primary{background:linear-gradient(120deg,rgba(53,224,198,.22),rgba(199,125,255,.22));border-color:var(--frost);}
+  .chip.primary{background:var(--accent);color:#fff;border-color:transparent;box-shadow:0 4px 14px rgba(91,83,232,.32);}
+  .chip.primary:hover{background:var(--accent-ink);}
+  .chip.on{background:rgba(91,83,232,.12);border-color:rgba(91,83,232,.35);color:var(--accent-ink);}
 
-  /* ---- ask / search ---- */
-  .askbar{position:relative;margin:6px 0 4px;}
-  .askbar input{
-    width:100%;font-family:var(--chrome);font-size:16px;color:var(--text);
-    padding:16px 52px 16px 18px;border-radius:16px;
-    background:var(--glass);border:1px solid var(--frost);
-    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);outline:none;
-  }
-  .askbar input::placeholder{color:var(--dimmer);}
-  .askbar input:focus{border-color:rgba(53,224,198,.55);box-shadow:0 0 0 3px rgba(53,224,198,.12);}
-  .askbar .go{position:absolute;right:8px;top:8px;bottom:8px;width:40px;border:none;border-radius:12px;cursor:pointer;
-    background:linear-gradient(135deg,var(--cyan),var(--magenta));display:grid;place-items:center;color:#0a0e1a;}
-  .askbar .go svg{width:18px;height:18px;}
-  .suggests{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px;}
-  .seed-chip{font-family:var(--data);font-size:12px;color:var(--dim);padding:7px 12px;border-radius:11px;
-    border:1px solid var(--frost-soft);background:var(--frost-soft);cursor:pointer;transition:.2s;}
-  .seed-chip:hover{color:var(--cyan);border-color:rgba(53,224,198,.4);}
+  /* ask */
+  .askbar{position:relative;margin:6px 0 2px;border-radius:18px;}
+  .askbar input{width:100%;font-family:var(--sans);font-size:16px;color:var(--ink);padding:17px 54px 17px 19px;
+    border-radius:18px;background:var(--glass);border:1px solid var(--border);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);outline:none;box-shadow:var(--shadow);}
+  .askbar input::placeholder{color:var(--faint);}
+  .askbar input:focus{border-color:rgba(91,83,232,.5);box-shadow:0 0 0 4px rgba(91,83,232,.1),var(--shadow);}
+  .askbar .go{position:absolute;right:9px;top:9px;bottom:9px;width:42px;border:none;border-radius:13px;cursor:pointer;
+    background:var(--accent);display:grid;place-items:center;color:#fff;box-shadow:0 4px 12px rgba(91,83,232,.35);}
+  .askbar .go svg{width:19px;height:19px;}
+  .askbar .go:active{transform:scale(.94);}
+  .suggests{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px;}
+  .seed{font-family:var(--sans);font-size:13px;font-weight:500;color:var(--muted);padding:8px 13px;border-radius:12px;
+    border:1px solid var(--border-soft);background:var(--glass-2);cursor:pointer;transition:.18s;backdrop-filter:blur(10px);}
+  .seed:hover{color:var(--accent-ink);border-color:rgba(91,83,232,.35);background:#fff;}
 
   .results{display:flex;flex-direction:column;gap:14px;margin-top:16px;}
-  .card{border-radius:18px;padding:18px 18px 16px;background:var(--glass);border:1px solid var(--frost-soft);
-    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
-  .card .body{font-family:var(--read);font-size:17px;line-height:1.42;}
-  .card .title{font-family:var(--read);font-style:italic;font-size:13px;color:var(--dim);margin-top:9px;}
-  .card .meta{display:flex;gap:12px;font-family:var(--data);font-size:10.5px;color:var(--dimmer);margin-top:12px;align-items:center;}
-  .card .meta .cite{color:var(--magenta);}
-  .card .row{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-top:12px;}
-  .card .mini{display:flex;gap:8px;}
-  .imini{cursor:pointer;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
-    background:var(--frost-soft);border:1px solid var(--frost-soft);color:var(--dim);transition:.18s;}
-  .imini:hover{color:var(--cyan);border-color:var(--frost);}
-  .imini.on{color:var(--magenta);border-color:rgba(199,125,255,.4);background:rgba(199,125,255,.1);}
-  .imini svg{width:16px;height:16px;}
+  .card{position:relative;border-radius:20px;padding:19px 20px 17px;overflow:hidden;}
+  .card::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:3px;background:var(--spectrum);opacity:.75;}
+  .card .body{font-family:var(--serif);font-optical-sizing:auto;font-variation-settings:'opsz' 40;font-size:17.5px;line-height:1.44;color:var(--ink);}
+  .card .title{display:block;font-family:var(--serif);font-style:italic;font-size:13.5px;color:var(--muted);margin-top:9px;text-decoration:none;line-height:1.45;}
+  a.card-title:hover{color:var(--accent-ink);}
+  .card .meta{display:flex;flex-wrap:wrap;gap:5px 12px;font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:11px;align-items:center;}
+  .card .meta .cite{color:var(--accent-ink);}
+  .card .meta .oa{color:#1f9d6b;}
+  .card .actions{margin-top:14px;gap:8px;}
+  .card .chip{padding:8px 12px;font-size:12.5px;}
 
-  /* ---- rabbit hole ---- */
-  .depth{font-family:var(--data);font-size:11px;color:var(--magenta);letter-spacing:.12em;margin:2px 2px 12px;text-transform:uppercase;}
-  .lineage{font-family:var(--data);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dimmer);margin:22px 2px 12px;display:flex;align-items:center;gap:8px;}
-  .lineage::before{content:"";flex:1;height:1px;background:var(--frost-soft);}
-  .lineage::after{content:"";flex:1;height:1px;background:var(--frost-soft);}
+  /* rabbit hole */
+  .depth{font-family:var(--mono);font-size:11px;color:var(--accent-ink);letter-spacing:.1em;margin:2px 2px 14px;text-transform:uppercase;display:flex;align-items:center;gap:7px;}
+  .lineage{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:24px 2px 14px;display:flex;align-items:center;gap:10px;}
+  .lineage::before,.lineage::after{content:"";flex:1;height:1px;background:var(--border);}
 
-  /* ---- states ---- */
-  .state{text-align:center;padding:48px 24px;color:var(--dim);}
-  .state .big{font-family:var(--read);font-size:20px;color:var(--text);margin-bottom:8px;}
-  .state.err .big{color:var(--magenta);}
-  .spinner{width:34px;height:34px;margin:0 auto 18px;border-radius:50%;
-    border:2px solid var(--frost-soft);border-top-color:var(--cyan);animation:spin .8s linear infinite;}
+  /* states */
+  .state{text-align:center;padding:46px 24px;color:var(--muted);font-size:14.5px;}
+  .state .big{font-family:var(--serif);font-size:20px;color:var(--ink);margin-bottom:8px;}
+  .state.err .big{color:var(--accent-ink);}
+  .spinner{width:32px;height:32px;margin:0 auto 18px;border-radius:50%;border:2.5px solid rgba(91,83,232,.18);border-top-color:var(--accent);animation:spin .8s linear infinite;}
   @keyframes spin{to{transform:rotate(360deg)}}
+  .empty{text-align:center;padding:56px 24px;}
+  .empty .glyph{width:56px;height:56px;margin:0 auto 14px;border-radius:16px;background:var(--spectrum-h);opacity:.85;display:grid;place-items:center;box-shadow:var(--shadow);}
+  .empty .glyph svg{width:28px;height:28px;color:#fff;}
+  .empty .big{font-family:var(--serif);font-size:20px;color:var(--ink);margin-bottom:6px;}
+  .empty p{color:var(--muted);font-size:14px;margin:0;line-height:1.5;}
+  code{font-family:var(--mono);font-size:.9em;background:var(--glass-strong);padding:2px 6px;border-radius:6px;color:var(--accent-ink);}
 
-  .empty{text-align:center;padding:60px 24px;color:var(--dimmer);}
-  .empty .glyph{font-size:40px;margin-bottom:12px;opacity:.5;}
-  .empty .big{font-family:var(--read);font-size:19px;color:var(--dim);margin-bottom:6px;}
-
-  /* ---- bottom nav ---- */
-  nav{flex:none;display:flex;justify-content:space-around;align-items:center;gap:4px;
-    padding:10px 14px calc(10px + env(safe-area-inset-bottom));margin:0 12px 12px;border-radius:20px;
-    background:var(--glass-strong);border:1px solid var(--frost);
-    backdrop-filter:blur(24px) saturate(150%);-webkit-backdrop-filter:blur(24px) saturate(150%);
-    box-shadow:0 8px 30px rgba(0,0,0,.4);}
+  /* bottom nav */
+  nav{flex:none;display:flex;justify-content:space-around;align-items:center;
+    padding:10px 12px calc(10px + env(safe-area-inset-bottom));margin:0 14px 14px;border-radius:22px;
+    background:var(--glass-strong);border:1px solid var(--border);
+    backdrop-filter:blur(28px) saturate(1.6);-webkit-backdrop-filter:blur(28px) saturate(1.6);box-shadow:var(--shadow-lg);}
   .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0;cursor:pointer;
-    color:var(--dimmer);font-family:var(--chrome);font-size:10.5px;letter-spacing:.04em;transition:color .2s;}
+    color:var(--faint);font-family:var(--sans);font-size:11px;font-weight:500;transition:color .2s;}
   .tab svg{width:22px;height:22px;transition:transform .2s;}
-  .tab.active{color:var(--cyan);}
-  .tab.active svg{transform:translateY(-1px);filter:drop-shadow(0 0 8px rgba(53,224,198,.6));}
+  .tab.active{color:var(--accent);}
+  .tab.active svg{transform:translateY(-1px);}
 
-  .flipwrap{perspective:1400px;}
+  .flipwrap{perspective:1600px;}
   .flip{animation:flip .5s ease;}
-  @keyframes flip{0%{transform:rotateY(0) scale(1)}45%{transform:rotateY(90deg) scale(.97);opacity:.4}55%{transform:rotateY(-90deg) scale(.97);opacity:.4}100%{transform:rotateY(0) scale(1)}}
-
-  @media (prefers-reduced-motion:reduce){
-    .blob{animation:none;} .flip{animation:none;} .screen{animation:none;}
-  }
+  @keyframes flip{0%{transform:rotateY(0)}45%{transform:rotateY(88deg) scale(.98);opacity:.35}55%{transform:rotateY(-88deg) scale(.98);opacity:.35}100%{transform:rotateY(0)}}
+  @media (prefers-reduced-motion:reduce){.orb{animation:none}.flip{animation:none}.screen{animation:none}}
 </style>
 </head>
 <body>
-<div class="field"><div class="blob a"></div><div class="blob b"></div></div>
-<div class="grid"></div>
+<div class="field"><div class="orb v"></div><div class="orb b"></div><div class="orb m"></div><div class="orb p"></div></div>
 
 <div class="app">
   <header>
-    <div class="brand">
-      <img class="mark" src="icons/favicon-64.png" alt="" />
-      <h1>Petr<span>i</span></h1>
-    </div>
+    <div class="brand"><h1>Prism</h1></div>
     <div class="readout">
-      <div class="stat"><b id="stat-seen">0</b>seen</div>
-      <div class="stat"><b class="fire" id="stat-streak">0</b>streak</div>
+      <div class="stat"><b id="stat-seen">0</b><span>seen</span></div>
+      <div class="stat"><b id="stat-streak">0</b><span>streak</span></div>
     </div>
   </header>
 
   <main>
-    <!-- RANDOM -->
     <section class="screen active" id="screen-random">
       <div class="eyebrow">Random specimen</div>
       <div class="flipwrap"><div id="random-slot"></div></div>
-      <div class="slide-actions" style="margin-top:16px">
+      <div class="actions" style="margin-top:18px">
         <div class="chip primary" id="flip-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
           Another one
@@ -212,7 +190,6 @@
       </div>
     </section>
 
-    <!-- ASK -->
     <section class="screen" id="screen-ask">
       <div class="eyebrow">Ask for a subject</div>
       <div class="askbar">
@@ -225,13 +202,11 @@
       <div class="results" id="results"></div>
     </section>
 
-    <!-- DAILY -->
     <section class="screen" id="screen-daily">
       <div class="eyebrow" id="daily-date">Specimen of the day</div>
       <div id="daily-slot"></div>
     </section>
 
-    <!-- SAVED -->
     <section class="screen" id="screen-saved">
       <div class="eyebrow">Your collection</div>
       <div id="saved-slot"></div>
@@ -240,7 +215,7 @@
 
   <nav>
     <div class="tab active" data-screen="random">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1.4" fill="currentColor" stroke="none"/><circle cx="16" cy="8" r="1.4" fill="currentColor" stroke="none"/><circle cx="8" cy="16" r="1.4" fill="currentColor" stroke="none"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1.3" fill="currentColor" stroke="none"/></svg>
       Random
     </div>
     <div class="tab" data-screen="ask">
@@ -248,7 +223,7 @@
       Ask
     </div>
     <div class="tab" data-screen="daily">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0-6 6c0 2 1 3 2 4.5.7 1 1 2 1 3.5h6c0-1.5.3-2.5 1-3.5 1-1.5 2-2.5 2-4.5a6 6 0 0 0-6-6Z"/><path d="M9 21h6"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0-6 6c0 2 1 3 2 4.5.7 1 1 2 1 3.5h6c0-1.5.3-2.5 1-3.5 1-1.5 2-2.5 2-4.5a6 6 0 0 0-6-6Z"/><path d="M9.5 21h5"/></svg>
       Daily
     </div>
     <div class="tab" data-screen="saved">
@@ -260,316 +235,255 @@
 
 <script>
 /* ============================================================
-   Curio — no-AI science buddy PWA
-   Live features (Ask, rabbit-hole) call Semantic Scholar directly.
+   Prism — no-AI science buddy PWA
+   Live features (Ask, rabbit-hole) use OpenAlex, which sends
+   CORS headers and needs no key — reliable from the browser.
    Pooled features (Random, Daily) read the bundled pool.json.
    ============================================================ */
 
-const S2 = "https://api.semanticscholar.org/graph/v1";
-const FIELDS = "title,year,authors,tldr,citationCount,externalIds,url,abstract";
+const OA = "https://api.openalex.org";
+const MAILTO = "you@example.com"; // ← set your email (OpenAlex "polite pool"). Optional but recommended.
+const SELECT = "id,doi,title,publication_year,authorships,abstract_inverted_index,cited_by_count,primary_location,open_access,best_oa_location";
 
-/* ---- tiny safe storage (falls back to memory if blocked) ---- */
+/* ---- safe storage (falls back to memory) ---- */
 const store = (() => {
-  let ok = true;
-  try { localStorage.setItem("__t","1"); localStorage.removeItem("__t"); } catch { ok = false; }
-  const mem = {};
+  let ok=true; try{localStorage.setItem("__t","1");localStorage.removeItem("__t");}catch{ok=false;}
+  const mem={};
   return {
-    get(k, d){ try{ const v = ok?localStorage.getItem(k):mem[k]; return v==null?d:JSON.parse(v);}catch{return d;} },
-    set(k, v){ try{ const s=JSON.stringify(v); if(ok)localStorage.setItem(k,s); else mem[k]=s; }catch{} }
+    get(k,d){try{const v=ok?localStorage.getItem(k):mem[k];return v==null?d:JSON.parse(v);}catch{return d;}},
+    set(k,v){try{const s=JSON.stringify(v);if(ok)localStorage.setItem(k,s);else mem[k]=s;}catch{}}
   };
 })();
 
 /* ---- gamification ---- */
-const G = {
-  seen: store.get("seen",0),
-  streak: store.get("streak",0),
-  last: store.get("last",null),
-  bump(){ this.seen++; store.set("seen",this.seen); render(); },
-  touchDay(){
-    const today = new Date().toDateString();
-    if(this.last === today) return;
-    const yest = new Date(Date.now()-864e5).toDateString();
-    this.streak = (this.last === yest) ? this.streak+1 : 1;
-    this.last = today;
-    store.set("streak",this.streak); store.set("last",this.last);
-    render();
-  },
-  render(){
-    document.getElementById("stat-seen").textContent = this.seen;
-    document.getElementById("stat-streak").textContent = this.streak;
-  }
+const G={
+  seen:store.get("seen",0),streak:store.get("streak",0),last:store.get("last",null),
+  bump(){this.seen++;store.set("seen",this.seen);this.render();},
+  touchDay(){const today=new Date().toDateString();if(this.last===today)return;
+    const yest=new Date(Date.now()-864e5).toDateString();
+    this.streak=(this.last===yest)?this.streak+1:1;this.last=today;
+    store.set("streak",this.streak);store.set("last",this.last);this.render();},
+  render(){document.getElementById("stat-seen").textContent=this.seen;document.getElementById("stat-streak").textContent=this.streak;}
 };
-function render(){ G.render(); }
 
-/* ---- saved collection ---- */
-const Saved = {
+/* ---- saved ---- */
+const Saved={
   key:"saved",
-  all(){ return store.get(this.key,[]); },
-  has(id){ return this.all().some(s=>s.id===id); },
-  toggle(spec){
-    let list = this.all();
-    if(this.has(spec.id)) list = list.filter(s=>s.id!==spec.id);
-    else list = [spec, ...list];
-    store.set(this.key,list);
-    return this.has(spec.id);
-  }
+  all(){return store.get(this.key,[]);},
+  has(id){return this.all().some(s=>s.id===id);},
+  toggle(spec){let l=this.all();l=this.has(spec.id)?l.filter(s=>s.id!==spec.id):[spec,...l];store.set(this.key,l);return this.has(spec.id);}
 };
 
 /* ---- helpers ---- */
-const el = (html) => { const t=document.createElement("template"); t.innerHTML=html.trim(); return t.content.firstElementChild; };
-const esc = (s="") => s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const authorline = (a=[]) => !a.length?"":(a.length<=2?a.map(x=>x.name).join(" & "):a[0].name+" et al.");
-const firstSentence = (t="") => { const m=t.match(/^.*?[.!?](\s|$)/); return (m?m[0]:t).slice(0,240).trim(); };
-
-// normalise an S2 paper into a specimen
-function toSpec(p){
-  const tldr = p.tldr && p.tldr.text ? p.tldr.text : (p.abstract ? firstSentence(p.abstract) : null);
-  if(!tldr) return null;
+const el=(h)=>{const t=document.createElement("template");t.innerHTML=h.trim();return t.content.firstElementChild;};
+const esc=(s="")=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const authorline=(a=[])=>{const n=a.map(x=>x.name).filter(Boolean);return !n.length?"":(n.length<=2?n.join(" & "):n[0]+" et al.");};
+const firstSentences=(t="",n=2)=>{
+  t=t.replace(/\s+/g," ").trim(); if(!t) return "";
+  const parts=t.match(/[^.!?]+[.!?]+/g);
+  let out = parts ? parts.slice(0,n).join(" ").trim() : t;
+  if(out.length>280) out=out.slice(0,277).replace(/\s+\S*$/,"")+"…";
+  return out;
+};
+const shortId=(id="")=>id.replace(/^https?:\/\/openalex\.org\//i,"");
+function rebuildAbstract(inv){
+  if(!inv) return "";
+  const pos=[]; for(const w in inv) for(const i of inv[w]) pos.push([i,w]);
+  pos.sort((a,b)=>a[0]-b[0]); return pos.map(p=>p[1]).join(" ");
+}
+function reportUrl(w){
+  return (w.open_access&&w.open_access.oa_url) ||
+         (w.best_oa_location&&(w.best_oa_location.pdf_url||w.best_oa_location.landing_page_url)) ||
+         (w.primary_location&&w.primary_location.landing_page_url) ||
+         w.doi || w.id || null;
+}
+function toSpec(w){
+  const snip=firstSentences(rebuildAbstract(w.abstract_inverted_index),2);
+  if(!snip) return null;
   return {
-    id: p.paperId || p.externalIds?.DOI || Math.random().toString(36).slice(2),
-    tldr, title: p.title || "", year: p.year || null,
-    authors: authorline(p.authors), cites: p.citationCount ?? null,
-    url: p.url || null, fromAbstract: !(p.tldr && p.tldr.text)
+    id:shortId(w.id), tldr:snip, title:w.title||"",
+    year:w.publication_year||null,
+    authors:authorline((w.authorships||[]).map(a=>({name:a.author&&a.author.display_name}))),
+    cites:w.cited_by_count??null, url:reportUrl(w),
+    oa:!!(w.open_access&&w.open_access.is_oa)
   };
 }
+const canHole=(s)=>/^W\d+/.test(s.id||"");
 
-/* ---- POOL (Random + Daily) ---- */
-let POOL = [];
+/* ---- pool ---- */
+let POOL=[];
 async function loadPool(){
-  try{
-    const r = await fetch("pool.json",{cache:"no-cache"});
-    const j = await r.json();
-    POOL = (j.specimens||[]).map(s=>({ id:s.id, tldr:s.tldr, title:s.title||"", year:s.year||null,
-      authors:s.authors||"", cites:s.cites??null, url:s.url||null, topic:s.topic||"" }));
-  }catch{ POOL = []; }
+  try{const r=await fetch("pool.json",{cache:"no-cache"});const j=await r.json();
+    POOL=(j.specimens||[]).map(s=>({id:s.id,tldr:s.tldr,title:s.title||"",year:s.year||null,
+      authors:s.authors||"",cites:s.cites??null,url:s.url||null,topic:s.topic||"",oa:s.oa||false}));
+  }catch{POOL=[];}
 }
-const dayIndex = () => { const d=new Date(); const seed=(d.getFullYear()*372)+(d.getMonth()*31)+d.getDate(); return POOL.length?seed%POOL.length:0; };
+const dayIndex=()=>{const d=new Date();const seed=d.getFullYear()*372+d.getMonth()*31+d.getDate();return POOL.length?seed%POOL.length:0;};
 
-/* ---- specimen slide markup ---- */
-function slideHTML(spec, {hero=false, glow=false}={}){
-  const saved = Saved.has(spec.id);
-  const idline = `<div class="id"><span>SPECIMEN · ${esc((spec.id||"").toString().slice(0,10))}</span>${spec.topic?`<span class="topic">${esc(spec.topic)}</span>`:""}</div>`;
-  const title = spec.title ? `<div class="title">${esc(spec.title)}</div>` : "";
-  const meta = [];
-  if(spec.year) meta.push(`<span>${spec.year}</span>`);
-  if(spec.cites!=null) meta.push(`<span class="cite">${spec.cites.toLocaleString()} citations</span>`);
-  if(spec.authors) meta.push(`<span>${esc(spec.authors)}</span>`);
-  const metaHTML = meta.length?`<div class="meta">${meta.join("")}</div>`:"";
-  const canHole = spec.id && !String(spec.id).startsWith("seed") && spec.title;
-  return `
-  <div class="slide ${hero?"hero":""} ${glow?"glow":""}" data-id="${esc(spec.id)}">
-    ${idline}
-    <div class="body">${esc(spec.tldr)}</div>
-    ${title}
-    ${metaHTML}
-    <div class="slide-actions">
-      <div class="chip save ${saved?"saved":""}" data-act="save">
-        <svg viewBox="0 0 24 24" fill="${saved?"currentColor":"none"}" stroke="currentColor" stroke-width="2"><path d="M6 3h12a1 1 0 0 1 1 1v16l-7-4-7 4V4a1 1 0 0 1 1-1Z"/></svg>
-        ${saved?"Saved":"Save"}
-      </div>
-      ${canHole?`<div class="chip" data-act="hole"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>Rabbit hole</div>`:""}
-      ${spec.url?`<a class="chip" href="${esc(spec.url)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>Source</a>`:""}
-    </div>
-  </div>`;
+/* ---- specimen cache ---- */
+const cacheMap=new Map();
+const cache=(s)=>{cacheMap.set(String(s.id),s);return s;};
+
+/* ---- markup ---- */
+function metaHTML(s,mono="meta"){
+  const m=[];
+  if(s.year)m.push(`<span>${s.year}</span>`);
+  if(s.cites!=null)m.push(`<span class="cite">${Number(s.cites).toLocaleString()} citations</span>`);
+  if(s.oa)m.push(`<span class="oa">open access</span>`);
+  if(s.authors)m.push(`<span>${esc(s.authors)}</span>`);
+  return m.length?`<div class="${mono}">${m.join("")}</div>`:"";
 }
-
-// specimen store so clicks can resolve a spec by id
-const specCache = new Map();
-function cache(spec){ specCache.set(String(spec.id), spec); return spec; }
-
-/* wire a slide's action buttons */
-function wireSlide(node){
-  node.querySelectorAll("[data-act]").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      const slide = btn.closest(".slide");
-      const spec = specCache.get(slide.dataset.id);
-      if(!spec) return;
-      if(btn.dataset.act==="save"){
-        const now = Saved.toggle(spec);
-        btn.classList.toggle("saved",now);
-        btn.querySelector("svg").setAttribute("fill",now?"currentColor":"none");
-        btn.childNodes[btn.childNodes.length-1].textContent = now?"Saved":"Save";
-        if(current==="saved") renderSaved();
-      }
-      if(btn.dataset.act==="hole"){ openHole(spec); }
-    });
-  });
+function actionsHTML(s,{big=false}={}){
+  const saved=Saved.has(s.id);
+  const report=s.url?`<a class="chip primary" href="${esc(s.url)}" target="_blank" rel="noopener" data-act="report">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>Read report</a>`:"";
+  const save=`<div class="chip save ${saved?"on":""}" data-act="save">
+      <svg viewBox="0 0 24 24" fill="${saved?"currentColor":"none"}" stroke="currentColor" stroke-width="2"><path d="M6 3h12a1 1 0 0 1 1 1v16l-7-4-7 4V4a1 1 0 0 1 1-1Z"/></svg>${saved?"Saved":"Save"}</div>`;
+  const hole=canHole(s)?`<div class="chip" data-act="hole">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>Rabbit hole</div>`:"";
+  return `<div class="actions">${report}${save}${hole}</div>`;
+}
+function slideHTML(s,{hero=false}={}){
+  const title=s.title?(s.url
+     ? `<a class="title" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>`
+     : `<div class="title">${esc(s.title)}</div>`):"";
+  return `<div class="slide glass ${hero?"hero":""}" data-id="${esc(s.id)}">
+    <div class="id"><span>Specimen · ${esc(String(s.id).slice(0,12))}</span>${s.topic?`<span class="topic">${esc(s.topic)}</span>`:""}</div>
+    <div class="body">${esc(s.tldr)}</div>${title}${metaHTML(s)}${actionsHTML(s,{big:true})}</div>`;
+}
+function cardHTML(s){
+  const title=s.title?(s.url
+    ? `<a class="title card-title" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>`
+    : `<span class="title">${esc(s.title)}</span>`):"";
+  return `<div class="card glass" data-id="${esc(s.id)}">
+    <div class="body">${esc(s.tldr)}</div>${title}${metaHTML(s)}${actionsHTML(s)}</div>`;
 }
 
-/* ---- RANDOM ---- */
-function showRandom(){
-  if(!POOL.length){ document.getElementById("random-slot").innerHTML = poolEmpty(); return; }
-  const spec = cache(POOL[Math.floor(Math.random()*POOL.length)]);
-  const slot = document.getElementById("random-slot");
-  slot.innerHTML = slideHTML(spec,{hero:true,glow:true});
-  slot.firstElementChild.classList.add("flip");
-  wireSlide(slot.firstElementChild);
-  G.bump();
-}
-function poolEmpty(){
-  return `<div class="slide hero"><div class="empty"><div class="glyph">🧫</div>
-    <div class="big">The pool is empty</div>
-    <div>Run <code style="font-family:var(--data);color:var(--cyan)">node generate-pool.mjs</code> to fill it with live specimens.</div></div></div>`;
-}
-
-/* ---- DAILY ---- */
-function showDaily(){
-  const slot = document.getElementById("daily-slot");
-  if(!POOL.length){ slot.innerHTML = poolEmpty(); return; }
-  const spec = cache(POOL[dayIndex()]);
-  document.getElementById("daily-date").textContent =
-    new Date().toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"});
-  slot.innerHTML = slideHTML(spec,{hero:true,glow:true});
-  wireSlide(slot.firstElementChild);
-  G.touchDay();
-}
-
-/* ---- ASK / SEARCH ---- */
-const SEEDS = ["octopus cognition","black holes","CRISPR","dark matter","gut microbiome","quantum computing","exoplanets","mycelium networks"];
-function initSuggests(){
-  const wrap = document.getElementById("suggests");
-  wrap.innerHTML = SEEDS.map(s=>`<span class="seed-chip">${s}</span>`).join("");
-  wrap.querySelectorAll(".seed-chip").forEach(c=>c.addEventListener("click",()=>{
-    document.getElementById("q").value = c.textContent; runSearch();
+/* wire actions inside a node */
+function wire(node){
+  node.querySelectorAll("[data-act='save']").forEach(b=>b.addEventListener("click",()=>{
+    const s=cacheMap.get(b.closest("[data-id]").dataset.id); if(!s)return;
+    const on=Saved.toggle(s); b.classList.toggle("on",on);
+    b.querySelector("svg").setAttribute("fill",on?"currentColor":"none");
+    b.childNodes[b.childNodes.length-1].textContent=on?"Saved":"Save";
+    if(current==="saved") renderSaved();
+  }));
+  node.querySelectorAll("[data-act='hole']").forEach(b=>b.addEventListener("click",()=>{
+    const s=cacheMap.get(b.closest("[data-id]").dataset.id); if(s)openHole(s);
   }));
 }
+
+/* ---- random ---- */
+function showRandom(){
+  const slot=document.getElementById("random-slot");
+  if(!POOL.length){slot.innerHTML=poolEmpty();return;}
+  const s=cache(POOL[Math.floor(Math.random()*POOL.length)]);
+  slot.innerHTML=slideHTML(s,{hero:true});
+  slot.firstElementChild.classList.add("flip"); wire(slot); G.bump();
+}
+function poolEmpty(){
+  return `<div class="slide glass hero"><div class="empty">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
+    <div class="big">The pool is empty</div>
+    <p>Run <code>node generate-pool.mjs</code> to fill it with live specimens.</p></div></div>`;
+}
+
+/* ---- daily ---- */
+function showDaily(){
+  const slot=document.getElementById("daily-slot");
+  if(!POOL.length){slot.innerHTML=poolEmpty();return;}
+  const s=cache(POOL[dayIndex()]);
+  document.getElementById("daily-date").textContent=new Date().toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"});
+  slot.innerHTML=slideHTML(s,{hero:true}); wire(slot); G.touchDay();
+}
+
+/* ---- ask ---- */
+const SEEDS=["octopus cognition","black holes","CRISPR","dark matter","gut microbiome","quantum computing","exoplanets","mycelium networks"];
+function initSuggests(){
+  const w=document.getElementById("suggests");
+  w.innerHTML=SEEDS.map(s=>`<span class="seed">${s}</span>`).join("");
+  w.querySelectorAll(".seed").forEach(c=>c.addEventListener("click",()=>{document.getElementById("q").value=c.textContent;runSearch();}));
+}
 async function runSearch(){
-  const q = document.getElementById("q").value.trim();
-  const out = document.getElementById("results");
-  if(!q){ return; }
+  const q=document.getElementById("q").value.trim();
+  const out=document.getElementById("results"); if(!q)return;
   document.getElementById("suggests").style.display="none";
-  out.innerHTML = `<div class="state"><div class="spinner"></div>Scanning the literature…</div>`;
+  out.innerHTML=`<div class="state"><div class="spinner"></div>Refracting the literature…</div>`;
   try{
-    const url = `${S2}/paper/search?query=${encodeURIComponent(q)}&limit=20&fields=${FIELDS}`;
-    const r = await fetch(url);
-    if(r.status===429) throw {rate:true};
-    if(!r.ok) throw {status:r.status};
-    const data = await r.json();
-    const specs = (data.data||[]).map(toSpec).filter(Boolean);
-    if(!specs.length){
-      out.innerHTML = `<div class="state"><div class="big">No specimens found</div>Try a broader subject, or a different phrasing.</div>`;
-      return;
-    }
-    out.innerHTML = "";
-    specs.forEach(s=>{ cache(s); const c = renderCard(s); out.appendChild(c); });
-    G.bump();
+    const url=`${OA}/works?search=${encodeURIComponent(q)}&filter=has_abstract:true&per_page=20&select=${SELECT}&mailto=${encodeURIComponent(MAILTO)}`;
+    const r=await fetch(url); if(r.status===429)throw{rate:true}; if(!r.ok)throw{status:r.status};
+    const data=await r.json();
+    const specs=(data.results||[]).map(toSpec).filter(Boolean);
+    if(!specs.length){out.innerHTML=`<div class="state"><div class="big">No specimens found</div>Try a broader subject or different wording.</div>`;return;}
+    out.innerHTML=""; specs.forEach(s=>{cache(s);const c=el(cardHTML(s));wire(c);out.appendChild(c);}); G.bump();
   }catch(e){
-    out.innerHTML = errBox(e);
-    out.querySelector("[data-retry]")?.addEventListener("click",runSearch);
+    out.innerHTML=errBox(e);
+    const rt=out.querySelector("[data-retry]"); if(rt)rt.addEventListener("click",runSearch);
   }
 }
 function errBox(e){
-  const msg = e.rate
-    ? "The public science library is busy right now (shared rate limit). Give it a few seconds and try again."
-    : "Couldn't reach the science library from the browser. This is usually a CORS or connection issue — see the README for the fix.";
+  const msg=e.rate?"OpenAlex is busy right now. Give it a few seconds and try again."
+    :"Couldn't reach OpenAlex. Check your connection and try again.";
   return `<div class="state err"><div class="big">Signal lost</div>${msg}
     <div style="margin-top:16px"><span class="chip primary" data-retry>Try again</span></div></div>`;
 }
-function renderCard(spec){
-  const saved = Saved.has(spec.id);
-  const meta = [];
-  if(spec.year) meta.push(`<span>${spec.year}</span>`);
-  if(spec.cites!=null) meta.push(`<span class="cite">${spec.cites.toLocaleString()} cites</span>`);
-  if(spec.authors) meta.push(`<span>${esc(spec.authors)}</span>`);
-  const c = el(`<div class="card" data-id="${esc(spec.id)}">
-    <div class="body">${esc(spec.tldr)}</div>
-    ${spec.title?`<div class="title">${esc(spec.title)}</div>`:""}
-    <div class="row">
-      <div class="meta">${meta.join("")}</div>
-      <div class="mini">
-        <div class="imini save ${saved?"on":""}" title="Save"><svg viewBox="0 0 24 24" fill="${saved?"currentColor":"none"}" stroke="currentColor" stroke-width="2"><path d="M6 3h12a1 1 0 0 1 1 1v16l-7-4-7 4V4a1 1 0 0 1 1-1Z"/></svg></div>
-        <div class="imini hole" title="Rabbit hole"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></div>
-        ${spec.url?`<a class="imini" href="${esc(spec.url)}" target="_blank" rel="noopener" title="Source"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>`:""}
-      </div>
-    </div>
-  </div>`);
-  c.querySelector(".save").addEventListener("click",e=>{
-    const now = Saved.toggle(spec); const b=e.currentTarget;
-    b.classList.toggle("on",now); b.querySelector("svg").setAttribute("fill",now?"currentColor":"none");
-  });
-  c.querySelector(".hole").addEventListener("click",()=>openHole(spec));
-  return c;
-}
 
-/* ---- RABBIT HOLE (live citation graph) ---- */
+/* ---- rabbit hole ---- */
 async function openHole(spec){
-  go("ask"); // reuse the ask screen as the hole surface
+  go("ask");
   document.getElementById("suggests").style.display="none";
-  document.getElementById("q").value = "";
-  const out = document.getElementById("results");
-  out.innerHTML = `<div class="depth">↓ down the rabbit hole</div>` +
-    slideHTML(spec,{glow:true}) +
-    `<div class="state"><div class="spinner"></div>Tracing what it built on and what it led to…</div>`;
-  wireSlide(out.querySelector(".slide"));
-  cache(spec);
+  document.getElementById("q").value="";
+  const out=document.getElementById("results");
+  out.innerHTML=`<div class="depth">↓ down the rabbit hole</div>`+slideHTML(spec,{})+
+    `<div class="state"><div class="spinner"></div>Tracing what it built on and led to…</div>`;
+  wire(out); cache(spec);
   try{
-    const f = "title,year,tldr,abstract,citationCount,externalIds,url,authors";
-    const url = `${S2}/paper/${encodeURIComponent(spec.id)}?fields=references.${f},citations.${f}`;
-    const r = await fetch(url);
-    if(r.status===429) throw {rate:true};
-    if(!r.ok) throw {status:r.status};
-    const d = await r.json();
-    const refs = (d.references||[]).map(toSpec).filter(Boolean).slice(0,6);
-    const cited = (d.citations||[]).map(toSpec).filter(Boolean).slice(0,6);
-    let html = `<div class="depth">↓ down the rabbit hole</div>` + slideHTML(spec,{glow:true});
-    if(refs.length){ html += `<div class="lineage">built on</div>`; }
-    out.innerHTML = html;
-    wireSlide(out.querySelector(".slide"));
-    refs.forEach(s=>{ cache(s); out.appendChild(renderCard(s)); });
-    if(cited.length){
-      out.appendChild(el(`<div class="lineage">led to</div>`));
-      cited.forEach(s=>{ cache(s); out.appendChild(renderCard(s)); });
-    }
-    if(!refs.length && !cited.length){
-      out.appendChild(el(`<div class="state">This one sits alone — no linked specimens came back.</div>`));
-    }
+    const q=(filter,extra="")=>`${OA}/works?filter=${filter}:${encodeURIComponent(spec.id)}&per_page=6${extra}&select=${SELECT}&mailto=${encodeURIComponent(MAILTO)}`;
+    const [refsR,citesR]=await Promise.all([ fetch(q("cited_by")), fetch(q("cites","&sort=cited_by_count:desc")) ]);
+    if(refsR.status===429||citesR.status===429)throw{rate:true};
+    const refs=((await refsR.json()).results||[]).map(toSpec).filter(Boolean).slice(0,6);
+    const cited=((await citesR.json()).results||[]).map(toSpec).filter(Boolean).slice(0,6);
+    out.innerHTML=`<div class="depth">↓ down the rabbit hole</div>`+slideHTML(spec,{}); wire(out);
+    if(refs.length){out.appendChild(el(`<div class="lineage">built on</div>`));refs.forEach(s=>{cache(s);const c=el(cardHTML(s));wire(c);out.appendChild(c);});}
+    if(cited.length){out.appendChild(el(`<div class="lineage">led to</div>`));cited.forEach(s=>{cache(s);const c=el(cardHTML(s));wire(c);out.appendChild(c);});}
+    if(!refs.length&&!cited.length)out.appendChild(el(`<div class="state">This one sits alone — no linked specimens came back.</div>`));
   }catch(e){
-    const box = el(errBox(e));
-    out.appendChild(box);
-    box.querySelector("[data-retry]")?.addEventListener("click",()=>openHole(spec));
+    const b=el(errBox(e)); out.appendChild(b);
+    const rt=b.querySelector("[data-retry]"); if(rt)rt.addEventListener("click",()=>openHole(spec));
   }
 }
 
-/* ---- SAVED ---- */
+/* ---- saved ---- */
 function renderSaved(){
-  const slot = document.getElementById("saved-slot");
-  const list = Saved.all();
-  if(!list.length){
-    slot.innerHTML = `<div class="empty"><div class="glyph">🗄️</div>
-      <div class="big">Nothing collected yet</div>
-      <div>Tap <b style="color:var(--magenta)">Save</b> on any specimen and it lands here — readable even offline.</div></div>`;
-    return;
-  }
-  slot.innerHTML = `<div class="results"></div>`;
-  const wrap = slot.querySelector(".results");
-  list.forEach(s=>{ cache(s); wrap.appendChild(renderCard(s)); });
+  const slot=document.getElementById("saved-slot"); const list=Saved.all();
+  if(!list.length){slot.innerHTML=`<div class="empty">
+    <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12a1 1 0 0 1 1 1v16l-7-4-7 4V4a1 1 0 0 1 1-1Z"/></svg></div>
+    <div class="big">Nothing collected yet</div>
+    <p>Tap <b>Save</b> on any specimen — it lands here with its report link, readable even offline.</p></div>`;return;}
+  slot.innerHTML=`<div class="results"></div>`; const wrap=slot.querySelector(".results");
+  list.forEach(s=>{cache(s);const c=el(cardHTML(s));wire(c);wrap.appendChild(c);});
 }
 
-/* ---- navigation ---- */
-let current = "random";
+/* ---- nav ---- */
+let current="random";
 function go(name){
-  current = name;
+  current=name;
   document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id==="screen-"+name));
   document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.screen===name));
-  document.querySelector("main").scrollTop = 0;
-  if(name==="daily") showDaily();
-  if(name==="saved") renderSaved();
-  if(name==="ask"){ document.getElementById("suggests").style.display=""; }
+  document.querySelector("main").scrollTop=0;
+  if(name==="daily")showDaily();
+  if(name==="saved")renderSaved();
+  if(name==="ask")document.getElementById("suggests").style.display="";
 }
 document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>go(t.dataset.screen)));
 document.getElementById("flip-btn").addEventListener("click",showRandom);
 document.getElementById("go").addEventListener("click",runSearch);
-document.getElementById("q").addEventListener("keydown",e=>{ if(e.key==="Enter") runSearch(); });
+document.getElementById("q").addEventListener("keydown",e=>{if(e.key==="Enter")runSearch();});
 
 /* ---- boot ---- */
 (async function(){
-  G.render();
-  initSuggests();
-  await loadPool();
-  showRandom();
-  if("serviceWorker" in navigator){
-    navigator.serviceWorker.register("service-worker.js").catch(()=>{});
-  }
+  G.render(); initSuggests(); await loadPool(); showRandom();
+  if("serviceWorker" in navigator) navigator.serviceWorker.register("service-worker.js").catch(()=>{});
 })();
 </script>
 </body>
