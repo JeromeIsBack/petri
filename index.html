@@ -278,13 +278,27 @@ const Saved={
 const el=(h)=>{const t=document.createElement("template");t.innerHTML=h.trim();return t.content.firstElementChild;};
 const esc=(s="")=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const authorline=(a=[])=>{const n=a.map(x=>x.name).filter(Boolean);return !n.length?"":(n.length<=2?n.join(" & "):n[0]+" et al.");};
-const firstSentences=(t="",n=2)=>{
-  t=t.replace(/\s+/g," ").trim(); if(!t) return "";
-  const parts=t.match(/[^.!?]+[.!?]+/g);
-  let out = parts ? parts.slice(0,n).join(" ").trim() : t;
-  if(out.length>280) out=out.slice(0,277).replace(/\s+\S*$/,"")+"…";
-  return out;
-};
+const LABELS=/\b(background|methods?|results?|conclusions?|objectives?|introduction|significance|interpretation|main findings?|findings?|design|funding|purpose|aims?)\b\s*[:.\-—]\s*/gi;
+const stripLabels=s=>s.replace(LABELS," ").replace(/\s+/g," ").trim();
+const cap=(s,n=280)=>{s=stripLabels(s);return s.length>n?s.slice(0,n-1).replace(/\s+\S*$/,"")+"…":s;};
+const firstSentences=(t="",n=2)=>{t=t.replace(/\s+/g," ").trim();if(!t)return"";const p=t.match(/[^.!?]+[.!?]+/g);return cap(p?p.slice(0,n).join(" ").trim():t);};
+/* Pull the paper's main finding/conclusion (no AI): prefer a Results/Conclusions
+   section, else the sentence with a conclusion cue, else the closing sentences. */
+function conclusionSnippet(text=""){
+  text=text.replace(/\s+/g," ").trim(); if(!text) return "";
+  const label=text.match(/\b(conclusions?|significance|interpretation|main findings?|results?)\b\s*[:.\-—]\s+/i);
+  if(label){let tail=text.slice(label.index+label[0].length);
+    const next=tail.search(/\b(background|methods?|introduction|objectives?|design|funding|keywords)\b\s*[:.\-—]/i);
+    if(next>40)tail=tail.slice(0,next);
+    const s=firstSentences(tail,2); if(s.length>25) return s;}
+  const sents=text.match(/[^.!?]+[.!?]+/g)||[text];
+  const CUE=/\b(we (show|find|found|demonstrate|report|conclude|reveal|observe|propose|identify|estimate)|here we|our (results?|findings?|data|study|analysis|work)|these (results?|findings?|data)|results? (show|indicate|suggest|reveal|demonstrate)|conclude that|in conclusion|demonstrat|reveal(s|ed)?|suggests? that|indicat(e|es|ed) that|provides? evidence|taken together|overall)\b/i;
+  const BG=/\b(however|little is known|remains? (unclear|unknown|poorly)|it is (unclear|unknown)|has(?:ve)? not (?:yet )?been|few studies|is needed|we (investigated|examined|assessed|studied|aimed|sought|set out)|the (role|effect|impact|purpose|aim) of)\b/i;
+  let best=null,score=-1,bi=-1;
+  sents.forEach((s,i)=>{let sc=0;if(CUE.test(s))sc+=3;if(BG.test(s))sc-=1.5;sc+=i/sents.length;if(sc>score){score=sc;best=s;bi=i;}});
+  if(best&&CUE.test(best)){let out=best.trim();if(out.length<90&&sents[bi+1])out+=" "+sents[bi+1].trim();return cap(out);}
+  return cap(sents.slice(-2).join(" ").trim());
+}
 const shortId=(id="")=>id.replace(/^https?:\/\/openalex\.org\//i,"");
 function rebuildAbstract(inv){
   if(!inv) return "";
@@ -298,7 +312,7 @@ function reportUrl(w){
          w.doi || w.id || null;
 }
 function toSpec(w){
-  const snip=firstSentences(rebuildAbstract(w.abstract_inverted_index),2);
+  const snip=conclusionSnippet(rebuildAbstract(w.abstract_inverted_index));
   if(!snip) return null;
   return {
     id:shortId(w.id), tldr:snip, title:w.title||"",

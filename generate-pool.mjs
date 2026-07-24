@@ -19,10 +19,15 @@ const TOPICS = [
   "gut microbiome", "quantum computing", "exoplanets", "mycelium networks",
   "neuroplasticity", "deep sea life", "volcanology", "immune system",
   "climate feedback", "graphene materials", "ancient DNA", "bird migration",
-  "photosynthesis", "antibiotic resistance", "sleep and memory", "coral reefs"
+  "photosynthesis", "antibiotic resistance", "sleep and memory", "coral reefs",
+  "gravitational waves", "tardigrades", "vaccine immunology", "battery chemistry",
+  "gene expression", "planetary atmospheres", "superconductivity", "animal navigation",
+  "microplastics", "stem cells", "quantum entanglement", "extremophiles",
+  "solar physics", "epigenetics", "machine learning", "ocean currents",
+  "protein folding", "insect flight", "neutron stars", "photosynthetic bacteria"
 ];
-const PER_TOPIC = 10;
-const TARGET = 400;
+const PER_TOPIC = 16;
+const TARGET = 600;
 // -------------------------------------------------------------
 
 const SELECT = "id,doi,title,publication_year,authorships,abstract_inverted_index,cited_by_count,primary_location,open_access,best_oa_location";
@@ -39,12 +44,30 @@ function rebuildAbstract(inv) {
   pos.sort((a, b) => a[0] - b[0]);
   return pos.map(p => p[1]).join(" ");
 }
+const LABELS = /\b(background|methods?|results?|conclusions?|objectives?|introduction|significance|interpretation|main findings?|findings?|design|funding|purpose|aims?)\b\s*[:.\-—]\s*/gi;
+const stripLabels = s => s.replace(LABELS, " ").replace(/\s+/g, " ").trim();
+const cap = (s, n = 280) => { s = stripLabels(s); return s.length > n ? s.slice(0, n - 1).replace(/\s+\S*$/, "") + "…" : s; };
 function firstSentences(t = "", n = 2) {
   t = t.replace(/\s+/g, " ").trim(); if (!t) return "";
-  const parts = t.match(/[^.!?]+[.!?]+/g);
-  let out = parts ? parts.slice(0, n).join(" ").trim() : t;
-  if (out.length > 280) out = out.slice(0, 277).replace(/\s+\S*$/, "") + "…";
-  return out;
+  const p = t.match(/[^.!?]+[.!?]+/g); return cap(p ? p.slice(0, n).join(" ").trim() : t);
+}
+/* Pull the paper's main finding/conclusion (no AI). */
+function conclusionSnippet(text = "") {
+  text = text.replace(/\s+/g, " ").trim(); if (!text) return "";
+  const label = text.match(/\b(conclusions?|significance|interpretation|main findings?|results?)\b\s*[:.\-—]\s+/i);
+  if (label) {
+    let tail = text.slice(label.index + label[0].length);
+    const next = tail.search(/\b(background|methods?|introduction|objectives?|design|funding|keywords)\b\s*[:.\-—]/i);
+    if (next > 40) tail = tail.slice(0, next);
+    const s = firstSentences(tail, 2); if (s.length > 25) return s;
+  }
+  const sents = text.match(/[^.!?]+[.!?]+/g) || [text];
+  const CUE = /\b(we (show|find|found|demonstrate|report|conclude|reveal|observe|propose|identify|estimate)|here we|our (results?|findings?|data|study|analysis|work)|these (results?|findings?|data)|results? (show|indicate|suggest|reveal|demonstrate)|conclude that|in conclusion|demonstrat|reveal(s|ed)?|suggests? that|indicat(e|es|ed) that|provides? evidence|taken together|overall)\b/i;
+  const BG = /\b(however|little is known|remains? (unclear|unknown|poorly)|it is (unclear|unknown)|has(?:ve)? not (?:yet )?been|few studies|is needed|we (investigated|examined|assessed|studied|aimed|sought|set out)|the (role|effect|impact|purpose|aim) of)\b/i;
+  let best = null, score = -1, bi = -1;
+  sents.forEach((s, i) => { let sc = 0; if (CUE.test(s)) sc += 3; if (BG.test(s)) sc -= 1.5; sc += i / sents.length; if (sc > score) { score = sc; best = s; bi = i; } });
+  if (best && CUE.test(best)) { let out = best.trim(); if (out.length < 90 && sents[bi + 1]) out += " " + sents[bi + 1].trim(); return cap(out); }
+  return cap(sents.slice(-2).join(" ").trim());
 }
 const reportUrl = w =>
   (w.open_access && w.open_access.oa_url) ||
@@ -61,7 +84,7 @@ async function fetchTopic(topic) {
   if (!res.ok) { console.log(`  skip "${topic}" (HTTP ${res.status})`); return []; }
   const { results = [] } = await res.json();
   return results.map(w => {
-    const tldr = firstSentences(rebuildAbstract(w.abstract_inverted_index), 2);
+    const tldr = conclusionSnippet(rebuildAbstract(w.abstract_inverted_index));
     if (!tldr) return null;
     return {
       id: (w.id || "").replace(/^https?:\/\/openalex\.org\//i, ""),

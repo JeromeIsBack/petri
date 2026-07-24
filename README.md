@@ -5,7 +5,9 @@ A light, glassmorphic, installable web app. It shows real science one **specimen
 ## What changed in this version
 
 - **New look:** light glassmorphism (frosted white panels over an aurora gradient), Fraunces + Hanken Grotesk + IBM Plex Mono, and the prism-edge accent. New **Prism** wordmark and light app icon.
-- **Live data moved to OpenAlex.** The old "signal lost" errors came from Semantic Scholar not reliably allowing browser (CORS) requests. OpenAlex sends proper CORS headers and needs no API key, so **Ask** and **rabbit-hole** now work directly from the browser. Snippets come from the paper's abstract (first sentence or two) instead of Semantic Scholar's one-line TLDR — the honest trade for reliability.
+- **Live data moved to OpenAlex.** The old "signal lost" errors came from Semantic Scholar not reliably allowing browser (CORS) requests. OpenAlex sends proper CORS headers and needs no API key, so **Ask** and **rabbit-hole** now work directly from the browser.
+- **Snippets are the paper's main finding.** Instead of the abstract's opening line (which is almost always background), a no-AI heuristic extracts the conclusion: it prefers a Results/Conclusions section, then a sentence with a finding cue ("we show", "our results reveal"…), and falls back to the closing sentences. Applies to search, rabbit-hole, and the generated pool.
+- **Fuller Random pool.** The bundled seed now has 60 curated facts (was 16), so Random feels full offline out of the box; `generate-pool.mjs` now targets ~600 real papers across 40 topics.
 - **Read the report + save it.** Every specimen now has a **Read report** button that opens the actual paper (open-access PDF when available, otherwise the DOI/landing page), and the paper title links to it too. **Save** stores the whole record — including that link — so saved items stay clickable and readable offline.
 
 ## Live vs. pooled
